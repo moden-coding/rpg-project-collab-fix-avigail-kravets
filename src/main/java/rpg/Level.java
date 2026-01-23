@@ -125,8 +125,12 @@ public class Level extends Object {
      * @param script Script to add
      */
     public void addScript(Script script) {
-        scripts.add(script);
-       script.setLevel(this);
+      if (script.getLevel()!= null){
+          script.getLevel().removeScript(script);
+
+      }
+      scripts.add(script);
+      script.setLevel(this);
     }
 
     /**
@@ -135,8 +139,11 @@ public class Level extends Object {
      * @param script script to remove
      */
     public void removeScript(Script script) {
-        scripts.remove(script);
-         this.addScript(null);
+        if(script != null){ 
+            scripts.remove(script);
+            script.setLevel(null);
+            
+        }
     }
 
     /**

@@ -179,8 +179,6 @@ public class Script {
 
     /* * * * * Beginning of part 2 * * * * */
 
-
-
     /**
      * Return the Level that this script is in.
      * 
@@ -189,17 +187,21 @@ public class Script {
     public Level getLevel() {
         return level;
     }
-public void setLevel(Level l){
-l= level;
 
+    public void setLevel(Level l) {
+        level= l;
 
-}
+    }
+
     /**
      * If this script is in a level, <code>remove()</code> will remove it from the
      * level.
      * Otherwise, there will be no effect.
      */
     public void remove() {
+        if(this.getLevel() != null){
+            level.removeScript(this);
+        }
     }
 
     /**
@@ -216,7 +218,25 @@ l= level;
      *              is null, the script
      *              is removed from its level.
      */
-    public void move(int x, int y, Level level) {
+
+    public void move(int newx, int newy, Level newlevel) {
+        if (newlevel == null) {
+            level.removeScript(this);
+            level = null;
+        } else {
+            if (newlevel != null && level != newlevel && level != null) {
+                level.removeScript(this);
+
+            }
+            if (level != newlevel) {
+                newlevel.addScript(this);
+                level = newlevel;
+            }
+        }
+        x = newx;
+        y = newy;
+        level = newlevel;
+
     }
 
     /**
@@ -231,6 +251,7 @@ l= level;
      * @param script Other script to whose location this one should move
      */
     public void move(Script other) {
+        move(other.getX(), other.getY(), other.getLevel());
     }
 
     /* * * * * Beginning of part 3 * * * * */
@@ -253,7 +274,6 @@ l= level;
      * @param line String to parse to create the script
      * @return script that was created; possibly a subclass of <code>Script</code>.
      */
-   
 
     public static Script createScript(String line) {
         return null;
